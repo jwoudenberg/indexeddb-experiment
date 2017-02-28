@@ -1,4 +1,4 @@
-var request = window.indexedDB.open('test', 14);
+var request = window.indexedDB.open('test', 20);
 var db = null;
 
 handleErrorEvent = (evt) => {
@@ -31,7 +31,10 @@ function addSomething(db, n) {
   var transaction = db.transaction(['test-store'], 'readwrite');
   transaction
     .objectStore('test-store')
-    .add(kb(10));
+    .add(kb(2), 12);
+  transaction
+    .objectStore('test-store')
+    .add(kb(2), '12');
   transaction.oncomplete = (evt) => {
     addSomething(db, n-1);
   };
@@ -55,4 +58,8 @@ function getRandomString() {
   var min = 1000000000;
   var bits = Math.floor(Math.random() * (max - min)) + min;
   return bits;
+}
+
+function toBlob(str) {
+  return new Blob([str]);
 }
